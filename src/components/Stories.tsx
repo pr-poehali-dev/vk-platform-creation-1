@@ -1,66 +1,76 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Icon from '@/components/ui/icon';
+import { Button } from '@/components/ui/button';
 
 interface Story {
   id: string;
-  name: string;
+  username: string;
   avatar: string;
-  hasNew: boolean;
+  hasStory: boolean;
+  isNew: boolean;
+  gradient: string;
 }
 
 const stories: Story[] = [
-  { id: '1', name: 'Ваша история', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user', hasNew: false },
-  { id: '2', name: 'Анна К.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anna', hasNew: true },
-  { id: '3', name: 'Максим П.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Max', hasNew: true },
-  { id: '4', name: 'Елена С.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Elena', hasNew: true },
-  { id: '5', name: 'Дмитрий В.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Dmitry', hasNew: false },
-  { id: '6', name: 'Ольга Н.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Olga', hasNew: true },
-  { id: '7', name: 'Сергей Л.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sergey', hasNew: false },
+  { id: '1', username: 'Мария', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Maria', hasStory: true, isNew: true, gradient: 'from-pink-500 via-rose-500 to-orange-500' },
+  { id: '2', username: 'Алексей', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex', hasStory: true, isNew: true, gradient: 'from-purple-500 via-pink-500 to-red-500' },
+  { id: '3', username: 'Виктория', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Vika', hasStory: true, isNew: false, gradient: 'from-blue-500 via-cyan-500 to-teal-500' },
+  { id: '4', username: 'Денис', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Denis', hasStory: true, isNew: true, gradient: 'from-indigo-500 via-purple-500 to-pink-500' },
+  { id: '5', username: 'Ольга', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Olga', hasStory: true, isNew: false, gradient: 'from-green-500 via-emerald-500 to-teal-500' },
+  { id: '6', username: 'Сергей', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sergey', hasStory: true, isNew: true, gradient: 'from-orange-500 via-amber-500 to-yellow-500' },
+  { id: '7', username: 'Анна', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anna2', hasStory: true, isNew: false, gradient: 'from-red-500 via-pink-500 to-rose-500' },
 ];
 
 export default function Stories() {
   return (
-    <div className="bg-card rounded-2xl border border-border p-4 animate-fade-in">
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+    <div className="bg-card/80 backdrop-blur-xl rounded-2xl border border-border/50 p-4 hover:shadow-xl transition-all duration-300 animate-fade-up">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          Истории
+        </h2>
+        <Button variant="ghost" size="sm" className="h-8 text-xs hover:bg-muted">
+          Все истории
+        </Button>
+      </div>
+
+      <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+        <button className="flex-shrink-0 group">
+          <div className="relative">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center border-2 border-dashed border-muted-foreground/30 group-hover:border-primary transition-all duration-300 group-hover:scale-105">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
+                <Icon name="Plus" size={18} className="text-white" />
+              </div>
+            </div>
+          </div>
+          <p className="text-xs font-medium text-center mt-2 text-muted-foreground group-hover:text-primary transition-colors">
+            Добавить
+          </p>
+        </button>
+
         {stories.map((story, index) => (
-          <button
-            key={story.id}
-            className="flex flex-col items-center gap-2 min-w-[80px] group"
+          <button 
+            key={story.id} 
+            className="flex-shrink-0 group relative"
             style={{ animationDelay: `${index * 50}ms` }}
           >
             <div className="relative">
-              {story.id === '1' ? (
-                <div className="relative">
-                  <Avatar className="w-16 h-16 ring-2 ring-border">
-                    <AvatarImage src={story.avatar} />
-                    <AvatarFallback>ИИ</AvatarFallback>
-                  </Avatar>
-                  <div className="absolute bottom-0 right-0 w-5 h-5 bg-primary rounded-full flex items-center justify-center ring-2 ring-card">
-                    <Icon name="Plus" size={14} className="text-white" />
-                  </div>
-                </div>
-              ) : (
-                <Avatar 
-                  className={`w-16 h-16 ring-3 transition-transform group-hover:scale-105 ${
-                    story.hasNew 
-                      ? 'ring-2 ring-gradient-to-r from-primary via-accent to-secondary' 
-                      : 'ring-2 ring-border'
-                  }`}
-                  style={{
-                    background: story.hasNew 
-                      ? 'linear-gradient(135deg, #0EA5E9 0%, #D946EF 50%, #8B5CF6 100%)' 
-                      : undefined,
-                    padding: story.hasNew ? '2px' : undefined,
-                  }}
-                >
-                  <AvatarImage src={story.avatar} className={story.hasNew ? 'rounded-full ring-2 ring-card' : ''} />
-                  <AvatarFallback>{story.name.charAt(0)}</AvatarFallback>
+              <div className={`p-0.5 rounded-2xl bg-gradient-to-br ${story.gradient} ${story.isNew ? 'animate-pulse-soft' : ''} group-hover:scale-105 transition-transform duration-300 shadow-lg`}>
+                <Avatar className="w-16 h-16 border-4 border-card">
+                  <AvatarImage src={story.avatar} />
+                  <AvatarFallback className="bg-gradient-to-br from-muted to-muted-foreground text-white">
+                    {story.username.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
+              </div>
+              {story.isNew && (
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center shadow-lg animate-pulse-soft">
+                  <div className="w-2 h-2 bg-white rounded-full" />
+                </div>
               )}
             </div>
-            <span className="text-xs text-center text-muted-foreground group-hover:text-foreground transition-colors line-clamp-2 w-full">
-              {story.name}
-            </span>
+            <p className="text-xs font-medium text-center mt-2 text-foreground group-hover:text-primary transition-colors truncate w-16">
+              {story.username}
+            </p>
           </button>
         ))}
       </div>
